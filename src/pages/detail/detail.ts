@@ -16,6 +16,15 @@ import { NoteService } from '../../app/note.service';
 })
 export class DetailPage {
 
+  static n = {
+    id: '',
+    date: '',
+    modelo: '',
+    marca: '',
+    cor: '',
+    placa: ''
+  }
+
   newNoteFlag = false;
   deleteNoteFlag = false;
   note;
@@ -43,8 +52,16 @@ export class DetailPage {
   }
 
   ionViewWillLeave (){
-    if (this.newNoteFlag)
-      this.noteService.addNote (this.note);
+    if (this.newNoteFlag){
+      let areSame: boolean = JSON.stringify(this.note) === JSON.stringify(DetailPage.n);
+      if(areSame){
+        console.log('Não tem dado, cancela', this.note);
+      }
+      else {
+        console.log('Deveriam estar diferentes', this.note, DetailPage.n);
+        this.noteService.addNote (this.note);
+      }
+    }
     else{
       if (this.deleteNoteFlag){
         this.noteService.removeNote(this.note);
